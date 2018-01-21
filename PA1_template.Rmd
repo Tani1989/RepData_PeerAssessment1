@@ -1,13 +1,11 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+#Reproducible Research Course Project
+
+##Loading and Preprocessing the Data
+
+###Set the working directory
 
 
 ## Loading and preprocessing the data
-
 
 
 ## What is mean total number of steps taken per day?
