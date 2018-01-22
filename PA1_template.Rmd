@@ -1,24 +1,24 @@
-#Reproducible Research Course Project
+# Reproducible Research Course Project
 
-##Loading and Preprocessing the Data
+## Loading and Preprocessing the Data
 
-###Load the data
+### Load the data
 ```{r}
 readData <- read.csv("activity.csv")
 ```
-###Let's summarize our data
+### Let's summarize our data
 ```{r}
 head(readData)
 str(readData)
 ```
-#What is mean total number of steps taken per day?
+# What is mean total number of steps taken per day?
 
-##1.Calculate the total number of steps taken per day.
+## 1.Calculate the total number of steps taken per day.
 ```{r}
 sumsteps <- aggregate(steps ~ date,data = readData,sum)
 head(sumsteps)
 ```
-##2.Make a histogram of the total number of steps taken each day.
+## 2.Make a histogram of the total number of steps taken each day.
 ```{r}
 hist(sumsteps$steps,col=8,main = "Histogram of the total number of steps taken each day",
      xlab = "Total number of steps in a day",ylab = "Frequency")
@@ -28,16 +28,16 @@ hist(sumsteps$steps,col=8,main = "Histogram of the total number of steps taken e
 
 
 
-##3.Calculate and report the mean and median of the total number of steps taken per day.
+## 3.Calculate and report the mean and median of the total number of steps taken per day.
 
 ```{r}
 mean(sumsteps$steps)  
 median(sumsteps$steps)
 
 ```
-#What is the average daily activity pattern?
+# What is the average daily activity pattern?
 
-##1.Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis).
+## 1.Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis).
 
 ```{r}
 averageSteps <- aggregate(steps ~ interval,data = readData,mean)
@@ -50,35 +50,35 @@ plot(averageSteps$interval,averageSteps$steps,type = "l",main="Average number of
 
 
 
-##2.Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
+## 2.Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
 ```{r}
 maxStepInterval <- averageSteps[which.max(averageSteps$steps),]
 maxStepInterval
 
 ```
-#Imputing missing values
+# Imputing missing values
 
-##1.Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NA's.
+## 1.Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NA's.
 ```{r}
 sum(is.na(readData))
 
 ```
-##2.Devise a strategy for filling in all of the missing values in the dataset.
-###I am using the mean strategy to fill the missing values.
+## 2.Devise a strategy for filling in all of the missing values in the dataset.
+### I am using the mean strategy to fill the missing values.
 ```{r}
 imputeData <- readData
 imputeData$steps[which(is.na(readData$steps))] <- mean(imputeData$steps,na.rm = TRUE)
 
 ```
-##3.Create a new dataset that is equal to the original dataset but with the missing data filled in.
+## 3.Create a new dataset that is equal to the original dataset but with the missing data filled in.
 ```{r}
 newDataset <- as.data.frame(imputeData)
 ```
 
 
-##4a.Make a histogram of the total number of steps taken each day.
-###Here we have selected the data with no missing values.
+## 4a.Make a histogram of the total number of steps taken each day.
+### Here we have selected the data with no missing values.
 ```{r}
 StepsTotal <- aggregate(steps ~ date, data = newDataset, sum, na.rm = TRUE)
 
@@ -88,33 +88,33 @@ hist(StepsTotal$steps, main = "Total number of steps taken each day", xlab = "da
 
 
 
-##4b.Calculate and report the mean and median total number of steps taken per day.
+## 4b.Calculate and report the mean and median total number of steps taken per day.
 ```{r}
 oldMean <- mean(sumsteps$steps)
 oldMean
 oldMedian <- median(sumsteps$steps)
 oldMedian
 ```
-###New Mean and Median
+### New Mean and Median
 ```{r}
 newMean <- mean(StepsTotal$steps)
 newMean
 newMedian <- median(StepsTotal$steps)
 newMedian
 ```
-##4c.Do these values differ from the estimates from the first part of the assignment? 
-###Yes, the mean is the same but the median is increased by 1.19 steps.
+## 4c.Do these values differ from the estimates from the first part of the assignment? 
+### Yes, the mean is the same but the median is increased by 1.19 steps.
 
 
-#5.Are there differences in activity patterns between weekdays and weekends?
-##5a.Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
+# 5.Are there differences in activity patterns between weekdays and weekends?
+## 5a.Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 ```{r}
 dateData <- as.POSIXct(newDataset$date)
 newDataset$weekday <- ifelse(weekdays(dateData) %in% c("Saturday", "Sunday"), 
                            "weekend", "weekday")
 
 ```
-##5b.Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). 
+## 5b.Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). 
 ```{r}
 intervalData <- aggregate(steps ~ interval + weekday,data = newDataset,mean)
 library(ggplot2)
