@@ -2,11 +2,6 @@
 
 ##Loading and Preprocessing the Data
 
-###Set the working directory
-```{r}
-setwd("W:/Coursera/Reproducible Research/week2/activitydata")
-
-```
 ###Load the data
 ```{r}
 readData <- read.csv("activity.csv")
