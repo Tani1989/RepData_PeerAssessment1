@@ -6,7 +6,7 @@
 ```{r}
 readData <- read.csv("activity.csv")
 ```
-### Let's summarize our data
+### Let's summarize our data.
 ```{r}
 head(readData)
 str(readData)
